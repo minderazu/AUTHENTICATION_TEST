@@ -1,0 +1,69 @@
+security:
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+        Symfony\Component\Security\Core\User\User: plaintext
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+    providers: 
+        # chain_provider:
+        #         chain:
+        #             providers: [in_memory, db_provider]
+        in_memory:
+            memory:
+                users:
+                   theadmin:
+                        password: iamadmin
+                        roles: 'ROLE_SUPER_ADMIN'
+        db_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        admin:
+            pattern: /admin
+            anonymous: ~
+
+            form_login: 
+                username_parameter: _username
+                login_path: admin_login
+                check_path: admin_login
+                provider: in_memory
+                default_target_path: admin
+
+            logout:
+                path: /admin_logout
+                target: /
+
+
+        main:
+            pattern: /
+            anonymous: ~
+
+            form_login: 
+                username_parameter: _email
+                login_path: login
+                check_path: login
+                provider: db_provider
+                default_target_path: welcome
+
+            logout:
+                path: /logout
+                target: /
+
+    access_control: 
+    - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/welcome, roles: ROLE_USER }
+    - { path: ^/admin_login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/admin, roles: ROLE_SUPER_ADMIN }
+   
+    
+    
+    
+   
+    
