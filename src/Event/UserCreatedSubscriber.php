@@ -29,15 +29,14 @@ class UserCreatedSubscriber implements EventSubscriberInterface
 
     public function onUserCreated(UserCreatedEvent $event)
     {
-
         $user = $event->getUser();
 
         $message = (new \Swift_Message())
-        ->setSubject('Welcome, '.$user->getUsername().'!')
-        ->setFrom('send@example.com')
-        ->setTo($user->getEmail())
-        ->setBody('Hi! You can login with your username and password at: http://localhost:8000/login');
-        
+            ->setSubject('Welcome, ' . $user->getUsername() . '!')
+            ->setFrom('send@example.com')
+            ->setTo($user->getEmail())
+            ->setBody('Hi! You can login with your username and password at: http://localhost:8000/login');
+
         return $this->_mailer->send($message);
 
         $event->stopPropagation();

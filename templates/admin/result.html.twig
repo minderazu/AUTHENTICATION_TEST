@@ -1,26 +1,28 @@
-    {% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %}
 
-    {% block body %}
+{% block body %}
 
     {% if error is defined %}
-            <span class="error">{{ error }}</span>
+        <span class="error">{{ error }}</span>
     {% endif %}
 
     {% if result is defined %}
 
-    {{  result|json_encode }}
+        {{  result|json_encode }}
 
-                <table>
-                    <tr>
-                        <th>Username</th><th>Email</th>
-                    </tr>
-                    {% for item in result %}
-                        <tr>
-                        <td>{{ item.username }}</td><td>{{ item.email }}</td>
-                        </tr>
-                    {% endfor %}
-                    </table>
+        <table>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+            </tr>
+            {% for item in result %}
+                <tr>
+                    <td>{{ item.username }}</td>
+                    <td>{{ item.email }}</td>
+                </tr>
+            {% endfor %}
+        </table>
 
-                {% endif %}
+    {% endif %}
 
-    {% endblock %}
+{% endblock %}

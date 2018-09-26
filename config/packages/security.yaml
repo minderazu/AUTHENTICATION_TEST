@@ -7,9 +7,6 @@ security:
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: ROLE_ADMIN
     providers: 
-        # chain_provider:
-        #         chain:
-        #             providers: [in_memory, db_provider]
         in_memory:
             memory:
                 users:
@@ -35,6 +32,8 @@ security:
                 check_path: admin_login
                 provider: in_memory
                 default_target_path: admin
+                csrf_token_generator: security.csrf.token_manager
+                csrf_parameter: csrf_admin_token
 
             logout:
                 path: /admin_logout
@@ -51,6 +50,8 @@ security:
                 check_path: login
                 provider: db_provider
                 default_target_path: welcome
+                csrf_token_generator: security.csrf.token_manager
+                csrf_parameter: csrf_user_token
 
             logout:
                 path: /logout

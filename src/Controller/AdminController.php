@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+
 use App\Entity\User;
 use App\Form\CreateUserType;
 use App\Repository\UserRepository;
@@ -15,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AdminController extends AbstractController
 {
-   
+
     /**
      * @Route("/admin", name="admin")
      */
@@ -33,59 +34,58 @@ class AdminController extends AbstractController
      */
 
     public function create_user(Request $request, UserPasswordEncoderInterface $passwordEncoder, EventDispatcherInterface $dispatcher)
-    {       
-                $user = new User();
+    {
+        $user = new User();
 
-                $form = $this->createForm(CreateUserType::class, $user);
+        $form = $this->createForm(CreateUserType::class, $user);
 
-                $form->handleRequest($request);
+        $form->handleRequest($request);
 
-                if ($form->isSubmitted() && $form->isValid()) {
-                    
-                    $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+        if ($form->isSubmitted() && $form->isValid()) {
 
-                    $user->setPassword($password);
+            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
 
-                    
-                    $entityManager = $this->getDoctrine()->getManager();
-                    $entityManager->getConnection()->beginTransaction();
+            $user->setPassword($password);
 
-                    $entityManager->persist($user);
-                    $entityManager->flush();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->getConnection()->beginTransaction();
 
-                    $event = new UserCreatedEvent($user);
-                    $dispatcher->dispatch(UserCreatedEvent::NAME, $event);
+            $entityManager->persist($user);
+            $entityManager->flush();
 
-                    $entityManager->commit();
-                    }
+            $event = new UserCreatedEvent($user);
+            $dispatcher->dispatch(UserCreatedEvent::NAME, $event);
 
-                return $this->render('admin/create_user.html.twig', [
-                              'user_form' => $form->createView()
-                       ]);
+            $entityManager->commit();
         }
+
+        return $this->render('admin/create_user.html.twig', [
+            'user_form' => $form->createView()
+        ]);
+    }
 
     /**
      * @Route("/admin/result", name="user_search")
      * Method({"POST"}) 
-     */       
-        public function user_search(Request $request)
-        {
-            $email = $request->request->get('email');
-            
-            $result = $this->getDoctrine()
-                ->getRepository(User::class)
-                ->findByExampleField($email);
+     */
+    public function user_search(Request $request)
+    {
+        $email = $request->request->get('email');
 
-            if ($result) { 
+        $result = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findByExampleField($email);
 
-                return $this->render('admin/result.html.twig', ['result' => $result]); // siuo atveju i json konvertuojam twig viduje
-             
-                }
-                else
-                {
+        if ($result) {
 
-                return $this->render('admin/result.html.twig', [
-                    'error' => 'No user found with this email '.$email]);
-            
-        }}
+            return $this->render('admin/result.html.twig', ['result' => $result]);
+
+        } else {
+
+            return $this->render('admin/result.html.twig', [
+                'error' => 'No user found with this email ' . $email
+            ]);
+
+        }
+    }
 }

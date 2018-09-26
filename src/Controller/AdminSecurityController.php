@@ -23,19 +23,19 @@ class AdminSecurityController extends AbstractController
             return $this->render('admin/dashboard.html.twig', [
                 'controller_name' => 'AdminController',
             ]);
-                } else{
-                    return $this->render('admin_security/admin_login.html.twig', [
-                        'error' => $error
-                    ]);
+        } else {
+            return $this->render('admin_security/admin_login.html.twig', [
+                'error' => $error
+            ]);
         }
     }
 
     /**
      * @Route("/admin_logout", name="admin_logout")
      */
-        
+
     public function admin_logout()
     {
-    
+
     }
 }

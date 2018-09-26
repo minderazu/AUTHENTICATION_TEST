@@ -11,15 +11,15 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(
-    * fields={"email"},
-    * errorPath="email",
-    * message="It appears you have already registered user with this email."
-    *)
-   * @UniqueEntity(
-    * fields={"username"},
-    * errorPath="username",
-    * message="It appears you have already registered user with this username."
-    *)
+ * fields={"email"},
+ * errorPath="email",
+ * message="It appears you have already registered user with this email."
+ *)
+ * @UniqueEntity(
+ * fields={"username"},
+ * errorPath="username",
+ * message="It appears you have already registered user with this username."
+ *)
  */
 
 class User implements UserInterface, \Serializable
@@ -49,26 +49,26 @@ class User implements UserInterface, \Serializable
      *
      * @ORM\Column(type="string", length=64)
      */
-    private $password; 
+    private $password;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      */
     private $email;
 
-    public function getUsername(): ?string
+    public function getUsername() : ? string
     {
         return $this->username;
     }
 
-    public function setUsername(string $username): self
+    public function setUsername(string $username) : self
     {
         $this->username = $username;
 
         return $this;
     }
 
-    public function getPassword(): ?string
+    public function getPassword() : ? string
     {
         return $this->password;
     }
@@ -83,19 +83,19 @@ class User implements UserInterface, \Serializable
         $this->plainPassword = $password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password) : self
     {
         $this->password = $password;
 
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail() : ? string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email) : self
     {
         $this->email = $email;
 
@@ -109,9 +109,13 @@ class User implements UserInterface, \Serializable
         ];
     }
 
-    public function getSalt() {}
+    public function getSalt()
+    {
+    }
 
-    public function eraseCredentials() {}
+    public function eraseCredentials()
+    {
+    }
 
     public function serialize()
     {
@@ -122,11 +126,11 @@ class User implements UserInterface, \Serializable
             $this->password
 
         ]);
-    }  
+    }
 
     public function unserialize($string)
     {
-        list (
+        list(
             $this->id,
             $this->username,
             $this->email,

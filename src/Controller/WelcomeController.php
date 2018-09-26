@@ -10,10 +10,9 @@ class WelcomeController extends AbstractController
     /**
      * @Route("/welcome", name="welcome")
      */
-    
+
     public function welcome()
     {
-
         return $this->render('welcome/welcome.html.twig', [
             'controller_name' => 'WelcomeController',
         ]);
