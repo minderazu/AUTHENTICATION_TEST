@@ -20,21 +20,25 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin", name="admin")
      */
-
     public function admin()
     {
-        return $this->render('admin/dashboard.html.twig', [
-            'controller_name' => 'AdminController',
-        ]);
+        return $this->render(
+            'admin/dashboard.html.twig',
+            [
+                'controller_name' => 'AdminController',
+            ]
+        );
     }
 
     /**
      * @Route("/admin/create_user", name="create_user")
      * Method({"GET", "POST"})
      */
-
-    public function create_user(Request $request, UserPasswordEncoderInterface $passwordEncoder, EventDispatcherInterface $dispatcher)
-    {
+    public function createUser(
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder,
+        EventDispatcherInterface $dispatcher
+    ) {
         $user = new User();
 
         $form = $this->createForm(CreateUserType::class, $user);
@@ -43,7 +47,10 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+            $password = $passwordEncoder->encodePassword(
+                $user,
+                $user->getPlainPassword()
+            );
 
             $user->setPassword($password);
 
@@ -59,16 +66,19 @@ class AdminController extends AbstractController
             $entityManager->commit();
         }
 
-        return $this->render('admin/create_user.html.twig', [
-            'user_form' => $form->createView()
-        ]);
+        return $this->render(
+            'admin/create_user.html.twig',
+            [
+                'user_form' => $form->createView()
+            ]
+        );
     }
 
     /**
      * @Route("/admin/result", name="user_search")
      * Method({"POST"}) 
      */
-    public function user_search(Request $request)
+    public function userSearch(Request $request)
     {
         $email = $request->request->get('email');
 
@@ -82,9 +92,12 @@ class AdminController extends AbstractController
 
         } else {
 
-            return $this->render('admin/result.html.twig', [
-                'error' => 'No user found with this email ' . $email
-            ]);
+            return $this->render(
+                'admin/result.html.twig',
+                [
+                    'error' => 'No user found with this email ' . $email
+                ]
+            );
 
         }
     }

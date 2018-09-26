@@ -14,12 +14,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * fields={"email"},
  * errorPath="email",
  * message="It appears you have already registered user with this email."
- *)
+ * )
  * @UniqueEntity(
  * fields={"username"},
  * errorPath="username",
  * message="It appears you have already registered user with this username."
- *)
+ * )
  */
 
 class User implements UserInterface, \Serializable
